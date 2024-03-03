@@ -29,14 +29,48 @@ export default class clienteDAO{
         if (cliente instanceof cliente){
             const conexao = await conectar();
             const sql = `UPDATE cliente SET id = ?, codigo = ?, nome = ?. email = ?, telefone = ?, rg = ?,
-            cpf = ?, endereco = ?`
+                         cpf = ?, endereco = ? HERE codigo = ?`;
+            const parametros = [
+                cliente.id,
+                cliente.codigo,
+                cliente.nome,
+                cliente.email,
+                cliente.telefone,
+                cliente.rg,
+                cliente.cpf,
+                cliente.endereco   
+            ];
+
+            await conexao.execute(sql,parametros);
+            
         }
     }
-    excluir(cliente){
 
+
+    async excluir(cliente){
+        if (cliente instanceof cliente){
+            const conexao = await conectar();
+            const sql = `DELETE FROM cliente WHERE codigo = ?`;
+            const parametros = [
+                cliente.codigo
+            ]
+            await conexao.execute(sql,parametros);
+        }
     }
 
-    consultar(termoDePesquisa){
-        
+    async consultar(termoDePesquisa){
+        if (termoDePesquisa === undefined){
+            termoDePesquisa = "";
+        }
+        let sql="";
+        if (isNaN(termoDePesquisa)) { //termo de pesquisa não é um número
+            sql = `SELECT = FROM cliente WHERE nome LIKE '%?%`;
+        }   
+        else{
+            sql = `SELECT = FROM cliente WHERE codigo = ?`;
+        }
+
+        const conexao = await conectar();
+        const [registros] = await execute(sql,[termoDePesquisa]);
     }
 }
