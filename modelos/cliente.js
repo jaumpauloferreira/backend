@@ -1,3 +1,5 @@
+
+import clienteDAO from "../percistencia/clienteDAO.js";
 export default class Cliente {
     #codigo;
     #nome;
@@ -75,13 +77,14 @@ export default class Cliente {
 
     //como armazenar os clientes no banco de dados?
 
-    gravar(){}
+    async gravar(){
+        const dao = new clienteDAO();
+        await dao.gravar(this);
+    }
 
     atualizar(){}
     
     excluir(){}
-    
-    carregar(){}
     
     consultar(termoDePesquisa){}
 
